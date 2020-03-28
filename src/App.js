@@ -3,26 +3,19 @@ import "./App.css";
 import logo from './logo.svg';
 class App extends React.Component {
 
-  constructor(props) 
-  {
-    super(props);
-    this.state = {      
-      name: "",
-      job: "",
-      like:0,
-      list: [],
-      src:""
-    };
-  }
-  
+constructor(props) 
+{
+  super(props);
+  this.state = {      
+    name: "",
+    job: "",
+    like:0,
+    list: [],
+    src:""
+  };
+}
 
-  DeleteItem(id)
-  {
-    const list =[...this.state.list];
-    const newlist = list.filter(x=>x.id != id);
-    this.setState({list:newlist});
-  }
-
+  // event handling 
   AddItem(name,job,src)
   {     
     if(name)
@@ -44,9 +37,15 @@ class App extends React.Component {
         like:0,
         src:""       
       });
+      document.getElementById('input-file').value = "";
     }     
   }
-  
+  DeleteItem(id)
+  {
+    const list =[...this.state.list];
+    const newlist = list.filter(x=>x.id != id);
+    this.setState({list:newlist});
+  };  
   SetItemName(name)
   {    
     this.setState({name:name});     
@@ -55,25 +54,6 @@ class App extends React.Component {
   {
     this.setState({job:job});    
   };
-  Like(id)
-  {
-    const list =[...this.state.list];   
-    var result= list.indexOf(list.find(x=>x.id==id));  
-    list[result].like = list[result].like + 1;
-    const newlist = list;
-    this.setState({list:newlist});
-  }
-
-  DisLike(id)
-  {
-    const list =[...this.state.list];   
-    var result= list.indexOf(list.find(x=>x.id==id));  
-    list[result].like = list[result].like > 0 ? list[result].like - 1: list[result].like;
-    const newlist = list;
-    this.setState({list:newlist});
-
-  }
-
   SetItemSrc(e)
   {
     e.preventDefault();
@@ -86,8 +66,27 @@ class App extends React.Component {
     }
 
     reader.readAsDataURL(file)
-  }
 
+   
+
+  };
+  Like(id)
+  {
+    const list =[...this.state.list];   
+    var result= list.indexOf(list.find(x=>x.id==id));  
+    list[result].like = list[result].like + 1;
+    const newlist = list;
+    this.setState({list:newlist});
+  };
+  DisLike(id)
+  {
+    const list =[...this.state.list];   
+    var result= list.indexOf(list.find(x=>x.id==id));  
+    list[result].like = list[result].like > 0 ? list[result].like - 1: list[result].like;
+    const newlist = list;
+    this.setState({list:newlist});
+
+  };
   render() {
       return (   
         <div className="block">        
@@ -100,7 +99,7 @@ class App extends React.Component {
                <input type="text" className="input-field" value={this.state.job} onChange={ e => this.SetItemJob(e.target.value)}/>
                </label>
                <label><span>File upload <span className="required"></span></span>
-               <input type="file" className="input-field" onChange={e => this.SetItemSrc(e)} />
+               <input type="file" id="input-file" className="input-field" onChange={e => this.SetItemSrc(e)} />
                </label>
                <label><span></span><input type="button" value="Add" onClick={ () => { this.AddItem(this.state.name,this.state.job,this.state.src) } } disabled={!this.state.name.length} /></label>
        </div>
